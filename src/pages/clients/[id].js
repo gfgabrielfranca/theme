@@ -3,6 +3,7 @@ import Link from 'next/link'
 import axios from 'axios'
 import fs from 'fs'
 import path from 'path'
+import getConfig from 'next/config'
 
 import * as S from '../../styles/client'
 
@@ -69,9 +70,13 @@ export default function Client1({ id, initialPrimaryColor, initialBackgroundColo
 }
 
 export async function getServerSideProps({ params: { id } }) {
-  const test = path.join(__dirname, '..', 'api', 'clients', id, 'theme.json');
+  // const test = path.join(__dirname, '..', 'api', 'clients', id, 'theme.json');
 
-  const data = fs.readFileSync(test)
+  // const data = fs.readFileSync(test)
+
+  const { serverRuntimeConfig } = getConfig()
+
+  const data = fs.readFileSync(path.join(serverRuntimeConfig.PROJECT_ROOT, `./public/api/clients/${id}/theme.json`))
   const theme = JSON.parse(data)
 
   return {
