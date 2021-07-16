@@ -3,7 +3,6 @@ import Link from 'next/link'
 import axios from 'axios'
 import fs from 'fs'
 import path from 'path'
-import getConfig from 'next/config'
 
 import * as S from '../../styles/client'
 
@@ -74,9 +73,10 @@ export async function getServerSideProps({ params: { id } }) {
 
   // const data = fs.readFileSync(test)
 
-  const { serverRuntimeConfig } = getConfig()
 
-  const data = fs.readFileSync(path.join(serverRuntimeConfig.PROJECT_ROOT, `./public/api/clients/${id}/theme.json`))
+  const dir = path.resolve('./public', 'api', 'clients', id, 'theme.json');
+
+  const data = fs.readFileSync(dir)
   const theme = JSON.parse(data)
 
   return {
