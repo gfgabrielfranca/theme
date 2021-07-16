@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/clients/*.js": {
+    "api/clients/**/*.js": {
       "includeFiles": "./public/**/*.json"
     }
   }
