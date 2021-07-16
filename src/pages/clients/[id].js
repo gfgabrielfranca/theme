@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
-import fs from 'fs'
-import path from 'path'
 
 import * as S from '../../styles/client'
 
@@ -68,15 +66,15 @@ export default function Client1({ id, initialPrimaryColor, initialBackgroundColo
   )
 }
 
-export async function getServerSideProps({ params: { id } }) {
-  const data = fs.readFileSync(path.resolve('./public', 'api', 'clients', id, 'theme.json'))
-  const theme = JSON.parse(data)
+export async function getServerSideProps(context) {
+  const { params: { id } } = context
+  const { data } = await axios.get(`http://${context.req.headers.host}/api/clients/${id}`)
 
   return {
     props: {
       id,
-      initialPrimaryColor: theme.primaryColor,
-      initialBackgroundColor: theme.backgroundColor
+      initialPrimaryColor: data.primaryColor,
+      initialBackgroundColor: data.backgroundColor
     }
   }
 }

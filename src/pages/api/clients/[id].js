@@ -1,16 +1,32 @@
-import fs from 'fs'
-import path from 'path'
+import { MongoClient } from 'mongodb'
+import url from 'url'
 
-export default function handler(req, res) { 
-  const { id } = req.query
+let cachedDb = null;
 
-  const data = fs.readFileSync(path.resolve('./public', 'api', 'clients', id, 'theme.json'))
+async function connectToDatabase(uri) {
+  if (cachedDb) return cachedDb
 
-  const newData = {
-    ...JSON.parse(data),
-    ...req.body 
+  const client = await MongoClient.connect(uri)
+
+  const dbName = url.parse(uri).pathname.substring(1)
+  const db = client.db(dbName)
+
+  cachedDb = db;
+
+  return db
+}
+
+export default async function handler(req, res) { 
+  const db = await connectToDatabase(process.env.MONGODB_URI)
+  const collection = db.collection('theme')
+
+  const query = { id: req.query.id };
+
+  if (req.method === 'POST') {
+    await collection.updateOne(query, { $set: { ...req.body } })
+    res.status(200).send("Ok")
+  } else {
+    const result = await collection.findOne(query)
+    res.status(200).json(result)
   }
-
-  fs.writeFileSync(path.resolve('./public', 'api', 'clients', id, 'theme.json'), JSON.stringify(newData))
-  res.status(200).send("Ok")
 }
