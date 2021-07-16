@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/clients/[id].js": {
+      "includeFiles": "./public/**"
+    }
+  }
+}
