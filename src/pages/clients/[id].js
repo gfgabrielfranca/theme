@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
 import fs from 'fs'
+import path from 'path'
 
 import * as S from '../../styles/client'
 
 export default function Client1({ id, initialPrimaryColor, initialBackgroundColor }) {
   const [primaryColor, setPrimaryColor] = useState(initialPrimaryColor)
   const [backgroundColor, setBackgroundColor] = useState(initialBackgroundColor)
-  
+
   function handlePrimaryColor(event) {
     setPrimaryColor(event.target.value)
   }
@@ -68,7 +69,9 @@ export default function Client1({ id, initialPrimaryColor, initialBackgroundColo
 }
 
 export async function getServerSideProps({ params: { id } }) {
-  const data = fs.readFileSync(`./public/api/clients/${id}/theme.json`)
+  const test = path.join(__dirname, 'api', 'clients', id, 'theme.json');
+
+  const data = fs.readFileSync(test)
   const theme = JSON.parse(data)
 
   return {
