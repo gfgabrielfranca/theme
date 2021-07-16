@@ -1,4 +1,5 @@
-const fs = require('fs')
+import fs from 'fs'
+import path from 'path'
 
 export default function handler(req, res) { 
   const { id } = req.query
