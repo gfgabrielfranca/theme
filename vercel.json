@@ -1,7 +1,7 @@
 {
   "functions": {
-    "api/clients/[id].js": {
-      "includeFiles": "./public/**"
+    "api/clients/*.js": {
+      "includeFiles": "./public/**/*.json"
     }
   }
 }
