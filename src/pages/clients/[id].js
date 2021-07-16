@@ -69,14 +69,7 @@ export default function Client1({ id, initialPrimaryColor, initialBackgroundColo
 }
 
 export async function getServerSideProps({ params: { id } }) {
-  // const test = path.join(__dirname, '..', 'api', 'clients', id, 'theme.json');
-
-  // const data = fs.readFileSync(test)
-
-
-  const dir = path.resolve('./public', 'api', 'clients', id, 'theme.json');
-
-  const data = fs.readFileSync(dir)
+  const data = fs.readFileSync(path.resolve('./public', 'api', 'clients', id, 'theme.json'))
   const theme = JSON.parse(data)
 
   return {
