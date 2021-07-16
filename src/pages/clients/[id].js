@@ -68,7 +68,9 @@ export default function Client1({ id, initialPrimaryColor, initialBackgroundColo
 
 export async function getServerSideProps(context) {
   const { params: { id } } = context
-  const { data } = await axios.get(`http://${context.req.headers.host}/api/clients/${id}`)
+  const { protocol, host } = context.req.headers
+
+  const { data } = await axios.get(`${protocol}://${host}/api/clients/${id}`)
 
   return {
     props: {
